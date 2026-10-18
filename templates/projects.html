@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block main %}
+<main class="catalog-main">
+  <div class="catalog-hero"><div class="eyebrow">SKELMMC ECOSYSTEM</div><h1>One place for <span>every project.</span></h1><p>Find installation guides, command lists, configuration examples, troubleshooting and changelogs. New SkelmMC projects can join this directory without a site redesign.</p></div>
+  <div class="catalog-bar"><h2>Project directory</h2><span>{{ projects | length }} documented project{% if projects | length != 1 %}s{% endif %}</span></div>
+  <div class="catalog-grid">
+    {% for project in projects %}
+    <article class="catalog-card"><div class="catalog-card-top"><span class="plugin-logo"><svg class="icon"><use href="#i-cube"/></svg></span><span class="project-tag">{{ project.status | upper }}</span></div>
+      <div class="catalog-kind">{{ project.category }}</div><h3>{{ project.name }}</h3><p>{{ project.description }}</p>
+      <div class="catalog-actions"><a class="primary-btn" href="../wiki/{{ project.overview }}/">Read docs <svg class="icon"><use href="#i-arrow"/></svg></a>{% if project.support %}<a class="catalog-secondary" href="../wiki/{{ project.support }}/">Support →</a>{% endif %}</div>
+    </article>
+    {% endfor %}
+  </div>
+  <div class="catalog-note"><strong>More projects are welcome.</strong><p>The directory is generated from <code>site.yml</code>. When another SkelmMC project is ready, give it its own docs section and it automatically appears here, in navigation, and in global search.</p></div>
+</main>
+{% endblock %}

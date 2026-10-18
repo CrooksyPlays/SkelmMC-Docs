@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block main %}
+<div class="docs-shell">
+  <aside class="sidebar" id="sidebar" aria-label="Documentation navigation">
+    <div class="sidebar-scroll">
+      <div class="sidebar-eyebrow">KNOWLEDGE BASE</div>
+      <div class="sidebar-title"><span class="side-mark"><svg class="icon"><use href="#i-book"/></svg></span><span>Documentation</span><span class="side-beta">BETA</span></div>
+      <div class="project-jump"><span>PROJECTS</span><a href="{{ root }}projects/">View all <svg class="icon"><use href="#i-arrow"/></svg></a></div>
+      {% for section in sections %}
+      <section class="nav-section {% if section.project %}project-nav-section{% endif %}">
+      {% if section.project %}<details class="nav-collapsible" {% if current.project == section.project %}open{% endif %}><summary class="nav-section-name nav-summary">{{ section.title }} <svg class="icon"><use href="#i-chevron"/></svg></summary>{% else %}<div class="nav-section-name">{{ section.title }}</div>{% endif %}
+      <ul class="sidebar-list">
+      {% for entry in section.pages %}
+        <li><a class="side-link {% if current.slug == entry.slug %}active{% endif %}" href="{{ url_for(entry.slug) }}" {% if current.slug == entry.slug %}aria-current="page"{% endif %}>
+        <span class="nav-indicator"></span><span>{{ entry.title }}</span>{% if current.slug == entry.slug %}<svg class="icon side-chevron"><use href="#i-chevron"/></svg>{% endif %}</a></li>
+      {% endfor %}
+      </ul>{% if section.project %}</details>{% endif %}</section>
+      {% endfor %}
+      <div class="sidebar-bottom"><div class="online-indicator"></div><span>One hub for every project</span></div>
+    </div>
+  </aside>
+  <main id="content" class="docs-main">
+    <div class="breadcrumbs"><a href="{{ root }}index.html">Home</a><svg class="icon"><use href="#i-chevron"/></svg><a href="{{ root }}projects/">Projects</a><svg class="icon"><use href="#i-chevron"/></svg><span>{{ section.title }}</span><svg class="icon"><use href="#i-chevron"/></svg><strong>{{ current.title }}</strong></div>
+    <div class="doc-heading"><span class="eyebrow-pill"><span class="pill-dot"></span>{{ section.title }}</span><h1>{{ current.title }}</h1></div>
+    <article class="markdown-body" id="article">{{ body | safe }}</article>
+    <div class="doc-end"><span>Found a problem with this page?</span> <span>Documentation is currently in preview.</span></div>
+    <nav class="page-switch" aria-label="Adjacent documentation pages">
+    {% if previous %}<a class="page-switch-item" href="{{ url_for(previous.slug) }}"><small>← Previous</small><strong>{{ previous.title }}</strong></a>{% else %}<span></span>{% endif %}
+    {% if next_page %}<a class="page-switch-item right" href="{{ url_for(next_page.slug) }}"><small>Next →</small><strong>{{ next_page.title }}</strong></a>{% endif %}
+    </nav>
+  </main>
+  <aside class="toc" aria-label="On this page"><div class="toc-inner"><div class="toc-heading">ON THIS PAGE</div>
+    {% if toc %}<ul>{% for item in toc %}<li class="{% if item.level == 'h3' %}toc-child{% endif %}"><a href="#{{ item.id }}">{{ item.title }}</a></li>{% endfor %}</ul>{% else %}<div class="toc-empty">No headings</div>{% endif %}
+    <div class="toc-divider"></div><a class="toc-help" href="{{ url_for(help_slug) }}">Need help? <svg class="icon"><use href="#i-arrow"/></svg></a>
+  </div></aside>
+</div>
+{% endblock %}

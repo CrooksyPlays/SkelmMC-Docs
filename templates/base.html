@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0c111c">
+  <meta name="description" content="{{ site.description }}">
+  <title>{{ title }} · {{ site.name }} Docs</title>
+  <link rel="icon" href="{{ root }}assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="{{ root }}assets/styles.css">
+  <script>(function(){try{document.documentElement.dataset.theme=localStorage.getItem('skelm-theme')||'dark'}catch(e){}})()</script>
+  <script src="{{ root }}assets/app.js" defer></script>
+</head>
+<body data-root="{{ root }}">
+  <svg class="svg-defs" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></symbol>
+    <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path d="M5 5l14 14M19 5 5 19"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42"/></symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20 15.3A8.5 8.5 0 0 1 8.7 4 8.5 8.5 0 1 0 20 15.3Z"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14m-6-6 6 6-6 6"/></symbol>
+    <symbol id="i-chevron" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol>
+    <symbol id="i-book" viewBox="0 0 24 24"><path d="M12 6.5c-3-2-7-2-10-1v13c3-1 7-1 10 1 3-2 7-2 10-1v-13c-3-1-7-1-10 1Zm0 0v13"/></symbol>
+    <symbol id="i-terminal" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="m7 9 3 3-3 3m5 0h5"/></symbol>
+    <symbol id="i-config" viewBox="0 0 24 24"><path d="M4 7h16M4 17h16M9 4v6m6 4v6"/><circle cx="9" cy="7" r="2" fill="currentColor" stroke="none"/><circle cx="15" cy="17" r="2" fill="currentColor" stroke="none"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="m12 2 8 4v6c0 5-3.5 8-8 10-4.5-2-8-5-8-10V6l8-4Z"/><path d="m8.5 12 2.5 2.5 4.5-5"/></symbol>
+    <symbol id="i-cube" viewBox="0 0 24 24"><path d="m12 2 9 5v10l-9 5-9-5V7l9-5Zm-9 5 9 5 9-5m-9 5v10"/></symbol>
+    <symbol id="i-external" viewBox="0 0 24 24"><path d="M14 4h6v6m0-6-9 9"/><path d="M20 13v6a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h6"/></symbol>
+  </svg>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="topbar-left">
+        <button class="icon-btn mobile-menu" type="button" id="mobile-menu" aria-label="Open navigation" aria-expanded="false"><svg class="icon"><use href="#i-menu"/></svg></button>
+        <a class="brand" href="{{ root }}index.html" aria-label="SkelmMC documentation home">
+          <span class="brand-mark"><svg class="icon"><use href="#i-cube"/></svg></span>
+          <span class="brand-word">skelm<span>mc</span></span><span class="brand-suffix">/ docs</span>
+        </a>
+      </div>
+      <nav class="top-links" aria-label="Global navigation">
+        <a href="{{ root }}index.html" class="{% if not current %}top-active{% endif %}">Home</a>
+        <a href="{{ root }}projects/" class="{% if title == 'Projects' %}top-active{% endif %}">Projects</a>
+        <a href="{{ root }}wiki/welcome/" class="{% if current %}top-active{% endif %}">Documentation</a>
+        <span class="top-status"><span class="status-dot"></span> Docs preview</span>
+      </nav>
+      <div class="top-actions">
+        <button type="button" class="search-button" data-open-search aria-label="Search documentation"><svg class="icon"><use href="#i-search"/></svg><span>Search docs...</span><kbd>⌘ K</kbd></button>
+        <button type="button" class="icon-btn mobile-search" data-open-search aria-label="Search"><svg class="icon"><use href="#i-search"/></svg></button>
+        <button type="button" class="icon-btn theme-toggle" id="theme-toggle" aria-label="Toggle color theme"><svg class="icon light-icon"><use href="#i-sun"/></svg><svg class="icon dark-icon"><use href="#i-moon"/></svg></button>
+      </div>
+    </div>
+  </header>
+  {% block main %}{% endblock %}
+  <footer class="site-footer"><div class="footer-inner"><span>© 2026 SkelmMC · Built for server creators.</span><span>Multi-project hub · Documentation preview</span></div></footer>
+  <div class="search-overlay" id="search-overlay" aria-hidden="true">
+    <div class="search-dialog" role="dialog" aria-modal="true" aria-label="Search documentation">
+      <div class="search-input-bar"><svg class="icon"><use href="#i-search"/></svg><input id="search-input" type="search" placeholder="Search guides, commands, configuration..." autocomplete="off" aria-label="Search documentation"><button class="search-esc" id="close-search" type="button">ESC</button></div>
+      <div class="search-results" id="search-results" aria-live="polite"><div class="search-hint">Start typing to search all documentation.</div></div>
+      <div class="search-footer"><span><kbd>↑</kbd> <kbd>↓</kbd> navigate</span><span><kbd>↵</kbd> open</span><span><kbd>ESC</kbd> close</span></div>
+    </div>
+  </div>
+  <div class="mobile-backdrop" id="mobile-backdrop"></div>
+</body>
+</html>

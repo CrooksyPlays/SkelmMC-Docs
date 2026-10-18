@@ -1,0 +1,8 @@
+__pycache__/
+*.pyc
+.DS_Store
+*.log
+
+# Local Python environment and generated build output
+.venv/
+dist/

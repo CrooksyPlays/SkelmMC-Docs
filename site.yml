@@ -1,0 +1,99 @@
+site:
+  name: SkelmMC
+  tagline: One hub. Every SkelmMC project.
+  description: Guides, API references, setup instructions and release notes for the entire SkelmMC ecosystem.
+  accent: '#79e0b8'
+sections:
+- title: Start here
+  pages:
+  - slug: welcome
+    title: Welcome
+    file: content/welcome.md
+    icon: home
+  - slug: platform/how-to-use
+    title: Using the docs
+    file: content/platform/how-to-use.md
+    icon: compass
+  - slug: platform/project-directory
+    title: Browse all projects
+    file: content/platform/project-directory.md
+    icon: layers
+- title: Skelmsentials
+  description: Core server utilities
+  pages:
+  - slug: skelmsentials/overview
+    title: Overview
+    file: content/skelmsentials/overview.md
+    icon: layers
+  - slug: skelmsentials/installation
+    title: Installation
+    file: content/skelmsentials/installation.md
+    icon: download
+  - slug: skelmsentials/getting-started
+    title: Getting started
+    file: content/skelmsentials/getting-started.md
+    icon: play
+  - slug: skelmsentials/commands
+    title: Commands & permissions
+    file: content/skelmsentials/commands.md
+    icon: terminal
+  - slug: skelmsentials/configuration
+    title: Configuration
+    file: content/skelmsentials/configuration.md
+    icon: sliders
+  - slug: skelmsentials/messages
+    title: Messages & branding
+    file: content/skelmsentials/messages.md
+    icon: message
+  - slug: skelmsentials/menus
+    title: Menu GUI
+    file: content/skelmsentials/menus.md
+    icon: grid
+  - slug: skelmsentials/teleportation
+    title: Teleportation
+    file: content/skelmsentials/teleportation.md
+    icon: map
+  - slug: skelmsentials/utilities
+    title: Player utilities
+    file: content/skelmsentials/utilities.md
+    icon: heart
+  - slug: skelmsentials/shop
+    title: Shop & economy
+    file: content/skelmsentials/shop.md
+    icon: shopping-bag
+  - slug: skelmsentials/compatibility
+    title: Compatibility
+    file: content/skelmsentials/compatibility.md
+    icon: server
+  - slug: skelmsentials/troubleshooting
+    title: Troubleshooting
+    file: content/skelmsentials/troubleshooting.md
+    icon: wrench
+  - slug: skelmsentials/changelog
+    title: Changelog
+    file: content/skelmsentials/changelog.md
+    icon: clock
+  project: skelmsentials
+- title: SkelmMC platform
+  pages:
+  - slug: platform/docs-standards
+    title: Documentation standards
+    file: content/platform/docs-standards.md
+    icon: check
+  - slug: platform/roadmap
+    title: Roadmap
+    file: content/platform/roadmap.md
+    icon: route
+  - slug: platform/contributing
+    title: Contributing
+    file: content/platform/contributing.md
+    icon: git
+projects:
+- id: skelmsentials
+  name: Skelmsentials
+  category: Core server utilities
+  status: Documentation preview
+  description: 'The essentials foundation for modern Paper servers: commands, utilities, menus, teleportation, messaging and
+    more.'
+  overview: skelmsentials/overview
+  support: skelmsentials/troubleshooting

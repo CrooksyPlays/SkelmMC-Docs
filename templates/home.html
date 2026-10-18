@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block main %}
+<main class="home-main">
+<section class="hero">
+  <div class="hero-grid"></div><div class="glow glow-one"></div><div class="glow glow-two"></div>
+  <div class="hero-content"><div class="hero-badge"><span class="glow-dot"></span> THE SKELMMC DOCUMENTATION HUB <span class="badge-arrow">↗</span></div>
+    <h1>Everything you need.<br><span>All in one place.</span></h1>
+    <p>All SkelmMC projects, in one searchable documentation library. Installation guides, commands, configuration, release notes and troubleshooting.</p>
+    <div class="hero-buttons"><a class="primary-btn" href="{{ url_for('platform/project-directory') }}">Explore projects <svg class="icon"><use href="#i-arrow"/></svg></a><button class="secondary-btn" type="button" data-open-search><svg class="icon"><use href="#i-search"/></svg> Search the docs <kbd>⌘ K</kbd></button></div>
+    <div class="hero-meta"><span><svg class="icon"><use href="#i-cube"/></svg> Multi-project docs</span><span><span class="meta-separator"></span></span><span><svg class="icon"><use href="#i-book"/></svg> Growing documentation</span></div>
+  </div>
+  <div class="hero-visual" aria-hidden="true"><div class="orbit orbit-1"></div><div class="orbit orbit-2"></div><div class="orbit orbit-3"></div><div class="floating-cube"><div class="cube-top"></div><div class="cube-left"></div><div class="cube-right"></div></div><div class="satellite sat-1"></div><div class="satellite sat-2"></div><div class="satellite sat-3"></div></div>
+</section>
+<section class="home-sections"><div class="section-header"><div><div class="eyebrow">THE ECOSYSTEM</div><h2>Explore documentation</h2><p>Choose a project and pick up right where you need to.</p></div><div class="section-counter">{{ "%02d" | format(projects | length) }} / PROJECT{% if projects|length != 1 %}S{% endif %}</div></div>
+<div class="plugin-grid">
+{% for project in projects %}
+<a class="plugin-card" href="{{ url_for(project.overview) }}">
+  <div class="plugin-card-upper"><span class="plugin-logo"><svg class="icon"><use href="#i-cube"/></svg></span><span class="project-tag">{{ project.category | upper }} <span class="project-tag-dot"></span> {{ project.status | upper }}</span></div>
+  <h3>{{ project.name }} <svg class="icon"><use href="#i-arrow"/></svg></h3>
+  <p>{{ project.description }}</p>
+  <div class="card-bottom"><span>Explore {{ project.name }} docs</span><span class="arrow-circle">↗</span></div>
+</a>
+{% endfor %}
+<a class="plugin-card upcoming" href="{{ root }}projects/">
+  <div class="plugin-card-upper"><span class="plugin-logo muted"><svg class="icon"><use href="#i-book"/></svg></span><span class="project-tag">GROWING ECOSYSTEM</span></div>
+  <h3>Project directory <svg class="icon"><use href="#i-arrow"/></svg></h3>
+  <p>Browse the project catalog. Future SkelmMC projects will have their own docs, guides, and independent release notes.</p>
+  <div class="card-bottom"><span>See all projects</span><span>↗</span></div>
+</a>
+</div>
+<div class="section-header quick-header"><div><div class="eyebrow">START HERE</div><h2>Popular starting points</h2><p>Jump straight into the topics server owners need most.</p></div></div>
+<div class="quick-grid">
+<a class="quick-card" href="{{ url_for('platform/project-directory') }}"><span class="quick-icon"><svg class="icon"><use href="#i-book"/></svg></span><h3>Find a project</h3><p>Browse the SkelmMC ecosystem.</p><span class="quick-arrow">↗</span></a>
+<a class="quick-card" href="{{ url_for('platform/how-to-use') }}"><span class="quick-icon"><svg class="icon"><use href="#i-search"/></svg></span><h3>Using the docs</h3><p>Search and navigate the hub.</p><span class="quick-arrow">↗</span></a>
+<a class="quick-card" href="{{ url_for('platform/docs-standards') }}"><span class="quick-icon"><svg class="icon"><use href="#i-config"/></svg></span><h3>Documentation standards</h3><p>Versions, accuracy and contributions.</p><span class="quick-arrow">↗</span></a>
+</div>
+</section>
+</main>
+{% endblock %}
