@@ -1,51 +1,96 @@
-The long-term goal is one predictable configuration system, with feature-specific settings and clearly separated player-facing messages. This page shows a **proposed schema** rather than a guaranteed currently supported `config.yml`.
+<div class="callout warning"><strong>Development defaults</strong><p>These keys are from the <strong>develop</strong> branch unless marked beta. Always back up your existing configuration and check the file bundled with your installed JAR.</p></div>
 
-<div class="callout warning"><strong>Design example, not a drop-in configuration</strong><p>Do not paste this sample into a production server until the plugin has implemented the same keys and validation. The installed jar's generated defaults take precedence.</p></div>
+## Configuration files
 
-## Proposed config.yml
+| File | Purpose |
+| --- | --- |
+| `plugins/Skelmsentials/config.yml` | Server branding, feature switches, teleportation, homes, economy, menus, chat and game-mode settings. |
+| `plugins/Skelmsentials/messages.yml` | Customizable player-facing messages. |
+| `plugins/Skelmsentials/players.yml` | Player-related stored data; back this up before upgrades. |
+| `plugins/Skelmsentials/locations.yml` | Stored spawn and warp locations; back this up. |
+| `plugins/Skelmsentials/shop.yml` | Shop categories, item prices and settings, **1.3 beta branch only**. |
 
-```yaml
-# Illustrative future schema only
-plugin:
+## Change the displayed name
+
+The internal plugin name remains `Skelmsentials`. Change the visible name and prefix in `config.yml`:
+
+~~~yaml
+branding:
+  name: 'SkelmMC'
+  prefix: '<gradient:#00BFFF:#8A2BE2><bold>{server}</bold></gradient> <dark_gray>»</dark_gray> '
+~~~
+
+`{server}` expands to `branding.name`. MiniMessage tags support colours and gradients. Change message bodies in `messages.yml` rather than editing code.
+
+## Enable or disable modules
+
+~~~yaml
+features:
+  gui: true
+  homes: true
+  spawn: true
+  rtp: true
+  tpa: true
+  warps: true
+  back: true
+  economy: true
+  chat: true
+  gamemodes: true
+~~~
+
+These are the foundation modules. `features.utilities` was added in the **1.2 beta** branch and `features.shop` in the **1.3 beta** branch. Disabled modules also block their corresponding GUI actions.
+
+## Home and teleport settings
+
+~~~yaml
+settings:
+  teleport-delay-seconds: 3
+  cancel-teleport-on-move: true
+  cancel-teleport-on-damage: true
+  home-limit: 3
+  home-limit-permission-values: [5, 10, 20, 50]
+  teleport-request-expiry-seconds: 90
+  back-enabled: true
+rtp:
   enabled: true
-  debug: false
+  radius-min: 500
+  radius-max: 4500
+  attempts: 16
+  cooldown-seconds: 300
+  worlds: []
+~~~
 
-teleportation:
-  warmup-seconds: 3
-  cancel-on-move: true
-  cancel-on-damage: true
+The delay controls countdown time before teleportation; movement and damage can cancel it. Empty `rtp.worlds` uses the player's current world. The RTP safety list is under `rtp.avoid-materials`. `spawn.fallback-to-world-spawn` defaults to `true`.
 
-homes:
+## Economy and chat
+
+~~~yaml
+economy:
   enabled: true
-  default-limit: 3
-
-utilities:
-  heal-enabled: true
-  feed-enabled: true
-  god-enabled: true
-
-menu:
+  currency-name: 'Coins'
+  currency-symbol: '⛃'
+  starting-balance: 100.00
+  max-transfer: 100000000.00
+chat:
   enabled: true
-  title: "&8SkelmMC Menu"
-  rows: 3
+  default-preset: normal
+  allow-player-minimessage: true
+  emoji-enabled: true
+~~~
 
-shop:
-  enabled: false
-```
+Chat presets have a `name`, `style`, `material` and `permission` under `chat.presets.<id>`. Defaults include `normal`, `aqua`, `sunset`, `birdflop` and `rainbow`. Chat emoji aliases are under `chat.emoji`.
 
-## Configuration principles
+## Menus and game modes
 
-- Use descriptive keys that are stable across updates.
-- Keep GUI layout separate from its command handlers.
-- Provide a complete default file with comments and valid types.
-- Validate material names, numbers, durations and missing values at startup.
-- Keep user-facing strings in a dedicated messages file.
-- Log the exact file and key when parsing fails.
+`gui.titles` sets GUI titles; `gui.items.main` controls icons, names, lore and slots on the main menu. `gui.navigation` controls paging and back buttons. Game modes use `gamemode.enabled`, `gamemode.allow-other-players`, `gamemode.gui-enabled`, `gamemode.gui-title` and `gamemode.gui-items`.
 
-## Reloading settings
+## Beta-only configuration
 
-Some settings can be safely reloaded; others may require rebuilding inventories, unregistering listeners, or restarting the server. Any reload command should document what it refreshes, and the plugin should warn when a restart is required.
+- **1.2 utilities:** `utilities.commands.<action>.enabled`, `cooldown-seconds` and `cost`; `utilities.gui-items`; `utilities.god-persistent` and `utilities.god-protect-void`.
+- **1.3 shop:** `features.shop`, `shop.enabled` and `shop.max-wallet-balance` in `config.yml`; item categories and buy/sell prices in `shop.yml`.
 
-## Migrating between versions
+Use [utilities](../utilities/) and [shop](../shop/) for the commands and side effects.
 
-A migration strategy should keep unknown keys intact when possible, supply newly introduced defaults, and provide a changelog explaining renamed or deleted settings. A backup is always recommended before upgrades.
+## Apply changes
+
+Use `/skelmsentials reload` (or `/bc reload`) for supported configuration/message changes. **Restart the server for command or permission changes and after installing/upgrading a JAR.** Keep backups of your original YAML and player/location data.

@@ -1,31 +1,45 @@
-Player utilities are the planned lightweight command set administrators reach for every day: healing, feeding, temporary protection and other convenience actions.
+<div class="callout warning"><strong>1.2 / 1.3 beta branches only</strong><p>These commands were verified in the player-utilities feature source, but they are not in `develop` or `main`. They are not documented as a stable public release.</p></div>
 
-<div class="callout warning"><strong>Not yet verified against a release</strong><p>The names and behavior on this page are feature designs, not promises that the commands are already available.</p></div>
+## Open the utilities menu
 
-## Heal and feed
+Use `/utilities` (aliases `/utility` and `/utilgui`) to open the player utilities GUI. The menu shortcut also appears in `/menu` in the 1.2 beta code. Access to the GUI defaults to everyone via `skelmsentials.utilities.utilities`, although individual actions remain permission-restricted.
 
-`/heal [player]` would restore health without bypassing server restrictions, while `/feed [player]` would restore food level and saturation. If the target player argument is omitted, the command would normally affect the sender.
+## Utility commands
 
-```text
-/heal
-/feed
-/heal ExamplePlayer
-```
+| Command | What it does | Important note |
+| --- | --- | --- |
+| `/heal [player]` | Restore health. | Default cooldown 60 seconds. |
+| `/feed [player]` | Restore hunger/saturation. | Default cooldown 60 seconds. |
+| `/god [player]` | Toggle invulnerability. | Session-only by default; void protection off by default. |
+| `/fly [player]` | Toggle flight. | Does not replace Creative/Spectator flight. |
+| `/speed <1-10> [player]` | Set walk speed or flight speed when flying. | Accepts levels from 1 to 10. |
+| `/repair` | Repair a damageable item in your hand. | Default cooldown 180 seconds. |
+| `/hat` | Equip one held item as a hat. | Returns/drops an existing helmet safely. |
+| `/workbench` | Open virtual crafting. | Alias `/craft`. |
+| `/enderchest` | Open your ender chest. | Alias `/ec`. |
+| `/trash` | Open a disposal inventory. | **Items inside are permanently destroyed when closed.** |
+| `/anvil` | Open virtual anvil. | Permission controlled. |
 
-Administrators may want separate permissions for self-targeting and targeting someone else.
+The command-specific permissions follow `skelmsentials.utilities.<command>` and default to **operators**. Permission `skelmsentials.utilities.others` allows administering other players; `skelmsentials.utilities.bypasscooldown` skips command cooldowns. `skelmsentials.utilities.*` grants them together.
 
-## God mode
+## Configure each action
 
-`/god [player]` is a proposed toggle for incoming damage immunity. Implementation should decide whether environmental damage, the void and custom plugin damage are affected, and whether the toggle persists across logout or restart.
+~~~yaml
+features:
+  utilities: true
+utilities:
+  god-persistent: false
+  god-protect-void: false
+  commands:
+    heal: {enabled: true, cooldown-seconds: 60, cost: 0.0}
+    feed: {enabled: true, cooldown-seconds: 60, cost: 0.0}
+    repair: {enabled: true, cooldown-seconds: 180, cost: 0.0}
+~~~
 
-## Flight and movement
+These entries exist in the 1.2 branch's `config.yml`. Other utility commands use the same `enabled` / `cooldown-seconds` / `cost` structure. Costs use the internal economy; paid actions cannot work while economy is disabled.
 
-Optional `/fly` and `/speed` commands could make player administration easier. They need careful permission checks, sane numeric ranges and predictable handling of game-mode changes.
+## GUI appearance
 
-## Data and lifecycle
+Customize `utilities.gui-title` and `utilities.gui-items.<action>` to change icons, names, lore and slots. The **1.3 beta** additionally changes the Repair menu icon from an anvil to a **Mace**, including a migration for an older default icon.
 
-Any persistent toggle should have a defined save strategy. Temporary player state must be cleaned up when the feature is disabled or when a player disconnects.
-
-## Permissions
-
-Permission design should separate normal self-use from actions targeting other players. The [Commands & permissions](../commands/) page contains candidate namespace conventions; final values require source verification.
+For installations upgrading between beta versions, keep the `plugins/Skelmsentials` folder and back it up before changing JARs.

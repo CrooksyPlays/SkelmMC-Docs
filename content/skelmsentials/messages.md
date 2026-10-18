@@ -1,54 +1,34 @@
-One of the key design requirements for Skelmsentials is **editable output branding**. Servers should not be forced to show a hard-coded Skelmsentials prefix when they want their own identity.
+<div class="callout warning"><strong>Development branch reference</strong><p>Branding and editable message formatting are present in development source, but no stable release is published from `main` yet.</p></div>
 
-## The intended result
+## Make chat show SkelmMC
 
-**Default-style output**
+Keep the internal plugin ID `Skelmsentials` so plugin folders and data stay compatible. In `plugins/Skelmsentials/config.yml`, configure:
 
-```text
-Skelmsentials - teleporting in 3
-```
+~~~yaml
+branding:
+  name: 'SkelmMC'
+  prefix: '<gradient:#00BFFF:#8A2BE2><bold>{server}</bold></gradient> <dark_gray>»</dark_gray> '
+~~~
 
-**Customized output**
+The token `{server}` becomes `SkelmMC`. MiniMessage supports normal colours, HEX values and gradients.
 
-```text
-SkelmMC - teleporting in 3
-```
+## Change player-facing messages
 
-The goal is to configure the prefix once and reuse it consistently, rather than replacing text in dozens of different messages.
+Player command messages belong in `plugins/Skelmsentials/messages.yml`. Example:
 
-## Proposed messages.yml
+~~~yaml
+messages:
+  teleport-start: '<yellow>Teleporting in {seconds} seconds. Please stand still.</yellow>'
+  teleport-cancelled: '<red>Teleport cancelled.</red>'
+  reload: '<green>{server} configuration reloaded.</green>'
+~~~
 
-<div class="callout info"><strong>Example configuration only</strong><p>These keys illustrate a design choice. Match them against the released plugin before using them.</p></div>
+This lets you change text without recompiling the plugin. The source also defines player-facing feedback for homes, warps, requests, RTP cooldowns, currency and game-mode actions.
 
-```yaml
-# Illustrative future schema only
-prefix: "&aSkelmMC &8» &r"
+Some message templates use placeholders such as `{seconds}`, `<player>` and `<home>`. Preserve each template's required placeholders when changing it.
 
-teleport:
-  countdown: "&7Teleporting in &a{seconds}&7..."
-  cancelled-moved: "&cTeleportation cancelled: you moved."
-  successful: "&aTeleported successfully!"
+## Reload and upgrading
 
-utility:
-  healed: "&aYour health has been restored."
-  fed: "&aYour hunger has been restored."
+Use `/skelmsentials reload` or `/bc reload` for supported configuration and message changes. The beta READMEs state that customized `messages.yml` is retained on upgrades and missing message keys can fall back to bundled defaults. Back up your existing files before an upgrade.
 
-errors:
-  no-permission: "&cYou don't have permission to do that."
-  player-not-found: "&cThat player isn't online."
-```
-
-## Variables and formatting
-
-The proposed system uses named placeholders like `{seconds}` and `{player}` for clarity. Color handling should be chosen deliberately: either legacy `&` codes, MiniMessage, or both with clearly documented precedence and escaping.
-
-## Consistent feedback
-
-- Send helpful explanations when permissions block a command.
-- Distinguish a cancelled teleport from an internal error.
-- Provide sensible fallback text if a message key is missing.
-- Avoid formatting codes leaking into console logs.
-
-## Testing changes
-
-Use a development server, vary each supported placeholder, and check messages with and without permissions. Do not let a malformed message entry prevent the entire plugin from enabling.
+The **1.3 beta** also migrates older default branding and changes the Utilities Repair icon to a Mace while retaining other custom icon settings.

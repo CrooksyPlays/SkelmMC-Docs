@@ -1,51 +1,75 @@
-This page is an initial command catalog **for design and review**. Commands should be generated or checked against the actual `plugin.yml`/runtime command registrations before publishing an authoritative release reference.
+<div class="callout warning"><strong>Source reference, not a released command list</strong><p>The foundation commands below exist in the <strong>develop</strong> branch (1.1.0-foundation). Utilities exist in the 1.2 beta branch, and shop commands in the 1.3 beta branch. The <strong>main</strong> branch does not yet contain a runnable plugin.</p></div>
 
-<div class="callout warning"><strong>Draft command matrix</strong><p>Except for the previously prototyped `/menu`, the entries below are proposed functionality. Permission nodes are proposed names, not guaranteed existing permission registrations.</p></div>
+## General and player commands — `develop`
 
-## Player commands
+| Command | How to use it |
+| --- | --- |
+| `/menu` | Open the main server GUI (aliases: `/essgui`, `/essentials`). |
+| `/sethome [name]` | Save your location; defaults to `home` when omitted. |
+| `/home [name]` | Teleport to a saved home; with no name, teleports if there is one home or opens the homes GUI. |
+| `/homes`, `/home gui` | Open the homes GUI. |
+| `/delhome <name>` | Delete a saved home. |
+| `/spawn` | Teleport to the configured spawn. `/spawn gui` opens its GUI. |
+| `/rtp [world]` | Find a safe random location; `/rtp gui` opens world choices. Alias: `/wild`. |
+| `/tpa [player]` | Ask to teleport to an online player. Without a player, opens a selector. |
+| `/tpahere [player]` | Ask another player to teleport to you. |
+| `/tpaccept [player]` | Accept a request (optionally naming sender); `/tpaccept gui` opens requests. |
+| `/tpdeny [player]` | Deny a request; `/tpdeny gui` opens requests. |
+| `/tprequests` | Open incoming teleport requests GUI. |
+| `/back` | Return to a recent location if one is recorded and the feature is enabled. |
+| `/warp [name]` | Teleport to a warp or show the warps GUI with no name. |
+| `/warps` | Open the public warps GUI. |
+| `/balance` | View your internal balance; aliases `/bal`, `/money`. `/balance gui` opens the economy GUI. |
+| `/pay <player> <amount>` | Transfer money to an online player; missing arguments open the player/payment GUI. |
+| `/economy gui` | Open the economy GUI; alias `/eco`. |
+| `/chatcolor [preset]` | Choose a permitted preset or open the colour selector. Alias `/ccolor`. |
+| `/emoji` | List configured chat emoji aliases. |
+| `/gamemodes` | Open the game-mode selection GUI, if permitted; alias `/gmgui`. |
+| `/gmc [player]`, `/gms [player]` | Set Creative or Survival. |
+| `/gmsp [player]`, `/gma [player]` | Set Spectator or Adventure. |
+| `/skelmsentials help` | Display plugin commands; aliases `/sk`, `/skelms`, `/bc`. |
+| `/skelmsentials version` | Display the plugin version and running Paper version. |
 
-| Command | Intended behavior | Status |
+### Admin commands — `develop`
+
+| Command | Description |
+| --- | --- |
+| `/setspawn` | Save spawn at your location. |
+| `/setwarp <name>` | Create a public warp at your location. |
+| `/delwarp <name>` | Remove a warp. |
+| `/eco set <online-player> <amount>` | Set an internal balance. |
+| `/eco give <online-player> <amount>` | Add money to a player. |
+| `/eco take <online-player> <amount>` | Remove money (minimum zero). |
+| `/skelmsentials reload` | Reload configuration, presentation and cached emoji; alias `/bc reload`. |
+
+Administrative commands above use `skelmsentials.admin` (operator by default). Most player commands use `skelmsentials.use` (granted by default), and can also be individually disabled via `features` in `config.yml`. The game-mode shortcuts additionally check their specific game-mode permissions.
+
+## Additional beta-branch commands
+
+The following are **not on develop or main as of this snapshot**:
+
+| Branch | Commands |
+| --- | --- |
+| `feature/player-utilities-1.2` | `/utilities`, `/heal`, `/feed`, `/god`, `/fly`, `/speed`, `/repair`, `/hat`, `/workbench` (alias `/craft`), `/enderchest` (alias `/ec`), `/trash`, `/anvil` |
+| `feature/shop-1.3` | `/shop`, `/sell`, `/sellall`, `/worth`, `/shopadmin` |
+
+See [utilities](../utilities/) and [shop](../shop/) for usage and important safety notes.
+
+## Permission nodes — foundation
+
+| Permission | Default | Purpose |
 | --- | --- | --- |
-| `/menu` | Open the main server GUI | Prototype; retest |
-| `/spawn` | Teleport to the configured spawn | Planned |
-| `/sethome [name]` | Save a home location | Planned |
-| `/home [name]` | Teleport to a saved home | Planned |
-| `/delhome [name]` | Remove a saved home | Planned |
-| `/tpa <player>` | Request teleportation | Planned |
-| `/tpaccept` | Accept an incoming request | Planned |
-| `/tpdeny` | Deny an incoming request | Planned |
-| `/back` | Return to a previous location | Planned |
-| `/warp [name]` | Teleport to a named warp | Planned |
+| `skelmsentials.use` | Everyone | Foundation player commands. |
+| `skelmsentials.admin` | Operators | Spawn/warp management, economy admin, reload. |
+| `skelmsentials.homes.10` | Operators | One home-limit override. Additional `homes.<number>` values are configured in `settings.home-limit-permission-values`. |
+| `skelmsentials.rtp.bypasscooldown` | Operators | Skip RTP cooldown. |
+| `skelmsentials.chat.format` | Operators | Use limited MiniMessage tags in chat if enabled. |
+| `skelmsentials.chat.allcolors` | Operators | Access any configured chat preset. |
+| `skelmsentials.gamemode.creative` / `survival` / `spectator` / `adventure` | Operators | Individual game-mode access. |
+| `skelmsentials.gamemode.others` | Operators | Set another player's mode. |
+| `skelmsentials.gamemode.gui` | Operators | Access game-mode GUI. |
+| `skelmsentials.gamemode.*` and `skelmsentials.*` | Operators | Group permissions defined in `plugin.yml`. |
 
-## Utility and admin commands
+Shop: `skelmsentials.shop.use` defaults to everyone; `skelmsentials.shop.admin` to operators. Utilities: `skelmsentials.utilities.utilities` (GUI) defaults to everyone; action permissions and `skelmsentials.utilities.others` default to operators.
 
-| Command | Intended behavior | Status |
-| --- | --- | --- |
-| `/heal [player]` | Restore player health | Planned |
-| `/feed [player]` | Restore hunger and saturation | Planned |
-| `/god [player]` | Toggle damage protection | Planned |
-| `/fly [player]` | Toggle flight where permitted | Proposed |
-| `/speed <value>` | Adjust movement speed | Proposed |
-| `/repair` | Repair permitted items | Proposed |
-| `/setspawn` | Set the default spawn point | Planned |
-| `/skelmsentials reload` | Reload safe configuration sections | Proposed |
-
-## Permissions design
-
-A predictable namespace makes permissions easier for admins to audit. These examples are **unconfirmed design candidates**:
-
-```text
-skelmsentials.command.menu
-skelmsentials.command.home
-skelmsentials.command.sethome
-skelmsentials.command.heal
-skelmsentials.command.feed
-skelmsentials.command.god
-skelmsentials.admin.reload
-```
-
-Before documenting defaults, define whether each node is granted to everyone, operators only, or neither. Permission plugins such as LuckPerms can then use the finalized nodes.
-
-## Documentation automation
-
-A future build step should inspect the plugin's command registrations and permission definitions, emitting a verified table for the website. This reduces the risk of documentation diverging from the jar after command renames or feature changes.
+**Important:** Server owners can change effective access using a permissions manager such as LuckPerms. Permissions mentioned here are from each branch's `plugin.yml`, not guesses.

@@ -1,25 +1,35 @@
-This is a placeholder for verified Skelmsentials release notes. Only confirmed, published changes should be added to the changelog.
+<div class="callout warning"><strong>Development history</strong><p>This is a source-branch tracker, not a public release changelog. No installable release has been confirmed on `main`.</p></div>
 
-## Documentation preview
+## Source snapshot — 18 October 2026
 
-- Created the initial SkelmMC documentation hub and navigation.
-- Added starter guides for installation, compatibility, menus and planned feature modules.
-- Separated draft functionality from confirmed release notes.
+| Branch | Commit | Milestone |
+| --- | --- | --- |
+| `main` | `e3cd59c` | Initial README and licence only |
+| `develop` | `e2c1064` | 1.1.0 foundation source |
+| `feature/player-utilities-1.2` | `c5cdd85` | 1.2.0-beta utilities |
+| `feature/shop-1.3` | `9efc67c` | 1.3.0-beta GUI shop and branding polish |
 
-## Known development context
+## 1.1.0-foundation — `develop`
 
-The project has previously used a `v1.0.3-beta` identifier in a server error log, and the GUI menu required compatibility work. This is context for development and is **not** an assertion about the latest release.
+- Command handlers for homes, public warps, spawn, RTP, teleport requests, back, internal economy, chat preset/emoji shortcuts and GUI menus.
+- Game-mode commands and selector GUI with separate permissions.
+- Branding and MiniMessage-backed messages, feature switches and configurable menus.
+- Paper 26.1.2 baseline with Java 25 target; further versions still need verification.
 
-## Release note format
+## 1.2.0-beta — `feature/player-utilities-1.2`
 
-Each future release should have a dated entry covering:
+- Player utility commands: heal, feed, god, fly, speed, repair, hat, workbench, ender chest, trash, anvil.
+- `/utilities` GUI and shortcut in `/menu`.
+- Per-command enablement, cooldowns, optional costs and permission checks.
+- Guardrails including explicit trash inventory warning and configurable god-mode behaviour.
 
-- Added features and new commands.
-- Fixes, particularly regressions affecting supported Paper versions.
-- Breaking changes and migration steps.
-- Configuration keys introduced, changed or removed.
-- Verified server versions and known issues.
+## 1.3.0-beta — `feature/shop-1.3`
 
-## Versioning
+- `/shop` with 10 starter categories and 200+ items, buy/sell quantity selector and paged inventory menus.
+- `/sell`, `/sellall`, `/worth` and administrative price/reload commands.
+- Configurable `shop.yml` and transaction protections; trades currently use internal economy rather than Vault.
+- Player-visible branding defaults to `SkelmMC`, Repair icon switched to **Mace**, and menu migration fixes.
 
-Choose a versioning policy that makes compatibility and release status visible. Pre-release builds should be labeled clearly. A public version matrix should point users at documentation matching the jar they actually run.
+## Release policy
+
+Features will only be marked **released** once they appear in a published build and the relevant server/gameplay checks are confirmed. An unmerged feature branch is never proof of a stable release. This page will be updated when source branches or releases change.

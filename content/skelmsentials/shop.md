@@ -1,43 +1,46 @@
-An inventory-based shop has been proposed as a possible Skelmsentials module. The intention is to give server owners a familiar purchasing interface, without making an economy integration mandatory for the rest of the essentials plugin.
+<div class="callout warning"><strong>1.3.0-beta feature branch only</strong><p>The shop is implemented on `feature/shop-1.3`, not on the repository's current `main` or `develop` branch. This is a test implementation that still needs real player trade/GUI testing.</p></div>
 
-<div class="callout info"><strong>Planned feature</strong><p>The shop is a design direction. No shop inventory, item prices or currency integration is claimed to exist yet.</p></div>
+## How players use the shop
 
-## Goals
+1. Use `/shop` to open the shop GUI (requires `skelmsentials.shop.use`, granted by default).
+2. Select one of the default **10 item categories**.
+3. Choose an item and select a buy or sell quantity: **1, 16, 32, 64 or 128**.
+4. Confirm the trade in the GUI; use the menu's option to sell all matching eligible items where appropriate.
 
-- Open a category-based GUI through a command such as `/shop`.
-- Support configurable item groups and prices.
-- Handle buying and, optionally, selling.
-- Integrate with an external economy provider when available.
-- Restrict access by permission or world if desired.
+The beta catalog includes **200+ items**. Prices use the symbol configured under `economy.currency-symbol`.
 
-## Example shop entry
+## Quick commands
 
-A future shop could use entries along these lines:
+| Command | Effect |
+| --- | --- |
+| `/shop` | Open the shop GUI. |
+| `/sell` | Sell eligible items held in your hand. |
+| `/sell all` or `/sellall` | Sell eligible **plain** items from main inventory storage. |
+| `/worth` | Show the unit sell price of your held item. |
+| `/shopadmin list` | List catalog entries (operator by default). |
+| `/shopadmin reload` | Reload shop catalog changes. |
+| `/shopadmin price <category> <item-id> buy|sell <amount>` | Change an item price. |
 
-```yaml
-# Concept example; not an implemented file format
-categories:
-  blocks:
-    title: "Building Blocks"
-    entries:
-      stone:
-        material: STONE
-        buy: 4.0
-        sell: 1.0
-```
+For example: `/shopadmin price ores diamond buy 1200` changes the diamond buy price in the `ores` category to 1200 currency units (subject to the implementation's price parser).
 
-## Economy design
+## Configuration
 
-A shop should use a narrow economy abstraction instead of coupling every menu handler to a particular provider. For Paper servers, an integration layer compatible with common economy plugins can be investigated, but it should not be presented as supported until tested.
+The beta includes `plugins/Skelmsentials/shop.yml` with category IDs, names, materials, permissions, enabled status, per-item `buy` / `sell` prices, GUI titles and world/transaction limits. Setting `buy: 0` or `sell: 0` disables that transaction direction.
 
-## Transaction safety
+`config.yml` also includes `features.shop`, `shop.enabled` and `shop.max-wallet-balance`. Existing `shop.yml` files are preserved during upgrades; you can edit prices in YAML then run `/shopadmin reload`.
 
-- Check inventory capacity before charging for a purchase.
-- Avoid duplicate transactions from repeated clicks.
-- Validate prices and prevent zero/negative-price exploits.
-- Keep payment and item delivery consistent when a transaction fails.
-- Log meaningful errors for admins without exposing sensitive internal state to players.
+## Permissions
 
-## One plugin or separate jar?
+- `skelmsentials.shop.use` — open/trade in the shop, **everyone by default**.
+- `skelmsentials.shop.admin` — price changes/reload, **operators by default**.
+- Individual catalog products may have additional permission restrictions.
 
-A modular core can provide the shared GUI, messages and permission infrastructure. The shop can remain an optional module initially; if its dependencies and release cadence become substantially different, it can later move into a companion jar without rewriting the shared platform.
+## Important limitations
+
+- Trades use the **Skelmsentials internal economy**. Shop balances are not currently integrated with Vault.
+- Purchases check inventory capacity before charging; transactions use checked integer-cents arithmetic.
+- Bulk selling accepts only eligible plain vanilla items, reducing accidental sale of customized/enchanted equipment.
+- There is **no multi-server shared wallet, dynamic stock, auction house, or drag-and-drop catalog editor** in this beta.
+- Shop prices are starter examples. Review them on a backup server before allowing production trading.
+
+See [commands](../commands/) for foundation economy commands and [configuration](../configuration/) for more settings.

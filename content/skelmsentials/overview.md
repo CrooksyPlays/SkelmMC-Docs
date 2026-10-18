@@ -1,33 +1,31 @@
-Skelmsentials is a modular essentials-plugin project for modern Minecraft Paper servers. The goal is to provide commonly requested commands, menus, teleportation features and server administration tools, while giving owners control over how they look and behave.
+<div class="callout warning"><strong>Development documentation — not a stable release</strong><p>The plugin repository currently has no installable release on its <strong>main</strong> branch. This reference describes code found on <strong>develop</strong> and separate beta feature branches. Do not assume all documented features are available in one published JAR.</p></div>
 
-<div class="callout warning"><strong>Work in progress</strong><p>This documentation is based on the project design discussions. Features listed as planned are not claims that they currently exist in a released jar.</p></div>
+## Project at a glance
 
-## Core principles
+Skelmsentials is an Essentials-style plugin for modern Paper Minecraft servers, with configurable SkelmMC branding, player teleportation, homes, menus, economy, chat, and game modes. More features are being developed in separate branches.
 
-- **Modular by design:** start with a reliable core before adding larger features.
-- **Configurable branding:** replace default plugin prefixes and user-facing messages with your server's own name.
-- **GUI-first where helpful:** menus for player actions and, later, optional shop features.
-- **Modern compatibility:** develop against Paper 26.1 and newer, with supported versions verified in testing.
-- **Predictable upgrades:** clear defaults, explicit configuration changes and documented migration steps.
+| Git branch | Source version | What is included | Availability |
+| --- | --- | --- | --- |
+| `main` | Initial README and licence | No plugin source or release JAR | Not installable |
+| `develop` | `1.1.0-foundation` | Homes, spawn, RTP, teleport requests, warps, `/back`, internal economy, chat colours/emojis, game modes, GUIs | Development source only |
+| `feature/player-utilities-1.2` | `1.2.0-beta` | Foundation plus utility commands and a utilities GUI | Unmerged beta branch |
+| `feature/shop-1.3` | `1.3.0-beta` | Utilities plus configurable shop and pricing tools | Unmerged beta branch |
 
-## Feature areas
+Branch feature information is based on the actual `plugin.yml`, Java handlers and YAML defaults, not just a roadmap. It does **not** constitute a verified live release.
 
-| Area | Purpose | Current docs status |
-| --- | --- | --- |
-| GUI menu | `/menu` and player navigation | Under development |
-| Teleportation | Home, spawn, requests and delays | Planned / design |
-| Player utilities | Heal, feed, god mode and similar commands | Planned / design |
-| Messaging | Editable prefix, prompts and feedback | Foundation design |
-| Shop | Inventory-based buying and selling | Planned |
+## Where to begin
 
-## Choose a guide
+- [Commands and permissions](../commands/) — see what exists in each source branch and how to use it.
+- [Configuration](../configuration/) — feature switches, teleport delays, homes, economy and branding.
+- [Player utilities](../utilities/) — the 1.2 beta commands, access, costs and warnings.
+- [Shop and economy](../shop/) — the 1.3 beta shop, buying, selling and administration.
+- [Messages and branding](../messages/) — choose the visible server name and edit MiniMessage text.
+- [Changelog and branch status](../changelog/) — identify which milestone introduced each feature.
 
-<div class="doc-cards"><a href="../installation/"><strong>Installation →</strong><span>Prepare your server and load the plugin.</span></a><a href="../messages/"><strong>Messages & branding →</strong><span>Design the custom message system.</span></a><a href="../menus/"><strong>Menu GUI →</strong><span>Structure inventory-based menus.</span></a><a href="../compatibility/"><strong>Compatibility →</strong><span>Supported server builds and testing.</span></a></div>
+## Compatibility target
 
-## Release and compatibility policy
+The Java 25 plugin targets **Paper 26.1.2, 26.2 and 26.3**. It is not advertised as Folia-compatible. Passing CI or source review is not equivalent to successful testing on your own server.
 
-The target baseline is **Paper 26.1+**. Each version still needs its own compilation and runtime checks. Compatibility should only be marked "verified" after successful testing on that server release.
+## Documentation status
 
-## Development status
-
-Use the [Roadmap](../../platform/roadmap/) to distinguish active development from future work. The commands and configuration pages contain examples that must be validated against source code before launch.
+This documentation was initially synchronized with the source on **18 October 2026**. It will be revised as the source changes and as features are merged or released. See the changelog for branch-specific status.
