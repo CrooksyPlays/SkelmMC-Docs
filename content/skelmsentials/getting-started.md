@@ -1,42 +1,43 @@
-This first-run checklist will help you set up a stable baseline before enabling more complex features.
+<div class="callout warning"><strong>Development branch only</strong><p>The plugin's `main` branch does not yet publish a verified installable build. This guide is for configuring and testing a future build or a beta test JAR, not for claiming production readiness.</p></div>
 
-## First-run checklist
+## Set up a safe test server
 
-1. Confirm the Paper server and Java versions meet the requirements of your plugin build.
-2. Install the jar and restart the server.
-3. Read console output for errors or warnings.
-4. Check the generated configuration files without assuming draft examples are implemented.
-5. Test a documented, available command in game.
-6. Verify permission behavior with a non-operator test account.
+1. Prepare a **Paper 26.1.2, 26.2 or 26.3** test server with **Java 25**.
+2. Back up the complete server and existing `plugins/Skelmsentials/` folder before replacing any beta JAR.
+3. Install only one Skelmsentials JAR in `plugins/` and restart.
+4. Watch the console for an enable message, errors and version warnings.
+5. Check the `plugins/Skelmsentials/config.yml` and `messages.yml` files.
+6. Use a non-operator account to check normal permissions and an operator to check admin actions.
 
-## Start with the menu
+For the current development/release state, read [Installation](../installation/) before downloading or using a build.
 
-The project has been prototyped around a `/menu` GUI command. The menu's intended job is to serve as a clear starting point for common player actions and links to larger systems.
+## First useful commands
 
-```text
-/menu
-```
+| Try | Expected purpose in the `develop` source |
+| --- | --- |
+| `/skelmsentials version` | Display plugin version and Paper version. |
+| `/menu` | Open the main player GUI. |
+| `/sethome base` | Save a home named `base`. |
+| `/home base` | Travel back to `base` after the configured warmup. |
+| `/tpa <player>` | Request to teleport to another online player. |
+| `/balance` | Inspect the standalone economy balance. |
 
-<div class="callout warning"><strong>Implementation note</strong><p>An earlier Skelmsentials beta produced a scheduler API error when a player clicked the menu. That is a development issue to verify as resolved in the actual compiled release before presenting the menu as stable.</p></div>
+Game-mode shortcuts have separate permissions and default to operators. More details are in [Commands](../commands/).
 
-## Configure the server identity
+## Use your SkelmMC brand
 
-The project goal is to allow server owners to change messages such as:
+In `config.yml`:
 
-```text
-Skelmsentials - teleporting in 3
-```
+~~~yaml
+branding:
+  name: 'SkelmMC'
+  prefix: '<gradient:#00BFFF:#8A2BE2><bold>{server}</bold></gradient> <dark_gray>»</dark_gray> '
+~~~
 
-to an identity that fits their server:
+This changes what players see without renaming the internal plugin, its JAR metadata or its data folder. Customize the individual replies in `messages.yml`.
 
-```text
-SkelmMC - teleporting in 3
-```
+## What to test
 
-See [Messages & branding](../messages/) for a proposed consistent approach to prefix and message variables.
+Create and delete homes; verify teleport cancellation by walking; test RTP safety; open and click each enabled menu; check economy balances; restart and verify stored locations. For a **1.2/1.3 beta**, additionally test the utilities GUI, permissions, costs, and any shop trades with disposable test accounts.
 
-## Next steps
-
-- Review the [Commands & permissions](../commands/) page before assigning permissions.
-- Learn the proposed [Configuration](../configuration/) layout.
-- Explore the [Roadmap](../../platform/roadmap/) for upcoming utilities and the shop GUI.
+Review [Configuration](../configuration/), [Player utilities](../utilities/) and [Shop](../shop/) for details specific to each branch.

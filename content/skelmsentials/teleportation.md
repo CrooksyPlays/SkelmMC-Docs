@@ -1,33 +1,56 @@
-Teleportation is a planned core module covering homes, warps, spawn points, teleport requests and safe cancellation. The following describes the proposed behavior, not a released contract.
+<div class="callout warning"><strong>Development behaviour</strong><p>The commands on this page are implemented in the `develop` branch, but the repository's `main` branch has no installable release. Use a test server when a build becomes available.</p></div>
 
-## Warmups and cancellation
+## Teleport delay and cancellation
 
-A common server rule is to delay certain teleports for a few seconds, then cancel if the player moves or takes damage.
+The `develop` source has a configurable warm-up. Default:
 
-```text
-SkelmMC » Teleporting in 3...
-SkelmMC » Teleporting in 2...
-SkelmMC » Teleporting in 1...
-SkelmMC » Teleported successfully!
-```
+~~~yaml
+settings:
+  teleport-delay-seconds: 3
+  cancel-teleport-on-move: true
+  cancel-teleport-on-damage: true
+~~~
 
-Possible configuration controls include per-command delays, combat restrictions, movement tolerance and permission-based delay exemptions.
+The plugin sends a teleport-start message and schedules the actual move after the configured delay (three seconds by default). **This is one initial message, not an automatic 3, 2, 1 countdown each second.** A pending teleport can be cancelled by movement or damage when those settings are enabled; another teleport cannot start while one is pending.
+
+Change the visible text in `messages.yml` using the `teleport-start`, `teleport-done` and `teleport-cancelled` message keys.
 
 ## Homes
 
-The planned home system would allow saving and removing named locations. Questions to settle include whether limits are global or permission-based, whether worlds can be excluded and how unloaded chunks are handled.
+Use `/sethome` to save the default home or `/sethome <name>` to save a named home. `/home <name>` travels to it. `/home` can open the homes GUI or directly use the only saved home. Use `/delhome <name>` to remove one.
 
-## Teleport requests
+The default home limit is **3**, with configured optional permission increases (`settings.home-limit-permission-values`, initially 5, 10, 20 and 50).
 
-A robust request flow should have an expiry time, clearly identify the requester, and clean up pending requests on logout. Repeated requests should not flood another player with messages.
+## Spawn and warps
 
-## Safe destinations
+An operator can `/setspawn` at the desired location. Everyone with `skelmsentials.use` can `/spawn`. If `spawn.fallback-to-world-spawn` is enabled, the Minecraft world spawn acts as a fallback.
 
-- Validate loaded worlds and accessible destination blocks.
-- Prevent suffocation, unsafe lava placement and falling into the void.
-- Avoid sending players to coordinates in deleted worlds.
-- Store world identifiers and positions in a format that survives restarts.
+Operators set and delete public warps using `/setwarp <name>` and `/delwarp <name>`. Players use `/warp <name>`, `/warp` or `/warps`.
 
-## Cross-version behavior
+## Player requests
 
-Paper versions can change event APIs and scheduler behavior. Teleport mechanics need runtime tests on each supported release, particularly when chunk loading or player state transitions are involved.
+- `/tpa <player>` asks to travel to someone.
+- `/tpahere <player>` asks them to travel to you.
+- `/tpaccept` and `/tpdeny` respond; `/tprequests` opens the GUI.
+
+Requests expire after **90 seconds** by default (`settings.teleport-request-expiry-seconds`). The current development code stores one pending incoming request per receiving player.
+
+## Safe random teleport
+
+`/rtp` chooses a random spot in the current Overworld; `/rtp [world]` can target a configured world. `/rtp gui` opens the world selector.
+
+~~~yaml
+rtp:
+  enabled: true
+  radius-min: 500
+  radius-max: 4500
+  attempts: 16
+  cooldown-seconds: 300
+  worlds: []
+~~~
+
+Candidates are checked against the world border, terrain and avoid-materials list. The module rejects Nether/End environments in this implementation. `skelmsentials.rtp.bypasscooldown` skips cooldowns.
+
+## Previous position
+
+`/back` returns to a tracked previous position when available; the foundation code keeps these previous-position entries in memory, so **do not expect them to survive a full server restart**.

@@ -1,50 +1,52 @@
-The main inventory GUI is intended to provide quick access to important features without expecting every player to memorize commands. This area covers design and implementation considerations for the `/menu` prototype.
+<div class="callout warning"><strong>Development / beta source only</strong><p>GUI handlers exist on `develop`. Utilities and Shop shortcuts come from later feature branches. All inventory actions must still be tested on the exact target Paper build.</p></div>
 
-## The menu command
+## Open the main menu
 
-```text
-/menu
-```
+Run `/menu` (aliases `/essgui` and `/essentials`). The development menu provides navigation to player services, depending on which features are enabled:
 
-The menu should open a configurable inventory with clearly named actions such as homes, warps, utilities and, where installed, the shop. Specific layouts and clickable actions are **not final**.
+| Action | Function |
+| --- | --- |
+| Homes | Saved home locations |
+| Spawn | Server spawn |
+| RTP | Random teleport |
+| Teleport Requests | Request a teleport or respond to invitations |
+| Warps | Server-managed public locations |
+| Economy | Balance and payment GUI |
+| Chat colours | Choose unlocked chat format presets |
 
-## Proposed layout model
+The 1.2 beta adds a **Player Utilities** shortcut, and the 1.3 beta adds a **Shop** shortcut. These do not exist on the earlier `develop` branch.
 
-A simple slot-based configuration could look like this:
+## Customize the actual GUI defaults
 
-```yaml
-# Illustrative design; not a confirmed config file
-menu:
-  title: "&8Server Menu"
-  rows: 3
-  buttons:
-    homes:
-      slot: 11
-      material: RED_BED
-      name: "&aHomes"
-      action: "OPEN_HOMES"
-    warps:
-      slot: 13
-      material: ENDER_PEARL
-      name: "&bWarps"
-      action: "OPEN_WARPS"
-    shop:
-      slot: 15
-      material: EMERALD
-      name: "&6Shop"
-      action: "OPEN_SHOP"
-```
+The settings use `gui`, **not** a separate `menu.buttons` section:
 
-## Inventory event safety
+~~~yaml
+gui:
+  enabled: true
+  titles:
+    main: '<gradient:#54daf4:#545eb6>{server} Menu</gradient>'
+  items:
+    main:
+      homes:
+        slot: 10
+        material: RED_BED
+        name: '<aqua>Homes</aqua>'
+        lore: ['<gray>Manage your home locations</gray>']
+      spawn:
+        slot: 12
+        material: COMPASS
+        name: '<aqua>Spawn</aqua>'
+        lore: ['<gray>Travel to spawn</gray>']
+~~~
 
-- Validate that the clicked inventory belongs to Skelmsentials.
-- Guard against null items, shift-clicks, number-key swaps and closing inventories.
-- Keep event handlers lightweight and move longer work into supported scheduler APIs.
-- Avoid linking the code to unavailable or version-specific method signatures.
-- Check GUI transitions after updating Paper and other plugins.
+Other default main-menu slots on `develop` are RTP **14**, teleport players **16**, warps **28**, economy **30**, chat colours **32**, and incoming requests **34**. The 1.2 branch adds utilities at **40**.
 
-<div class="callout warning"><strong>Known development concern</strong><p>An earlier 1.0.3-beta log showed a <code>NoSuchMethodError</code> from an inventory-click handler calling a scheduler method. Ensure the plugin is compiled and tested against the intended API signature before considering the GUI ready for release.</p></div>
+Navigation arrows and back icons are under `gui.navigation`. Separate GUI titles live in `gui.titles`. Custom menu item icon/name/lore settings use the MiniMessage format.
 
-## Making menus extensible
+## Enable and permissions
 
-Instead of hard-coding button behavior into a single command listener, define a small menu registry and action handlers. That lets more plugins add their own destinations later without forcing an entirely separate menu system.
+Use `features.gui` and `gui.enabled` to control menu availability. Individual modules (homes, RTP, warps, etc.) are independently toggleable under `features`. Opening the main menu uses `skelmsentials.use`; the actions inside still observe individual permissions.
+
+## Test menu clicks before a release
+
+Earlier pre-foundation beta testing exposed an inventory-click `NoSuchMethodError` from scheduler API mismatch. The exact latest compiled JAR should be tested for opening, moving between, and clicking menus before classifying the GUI as production-ready.

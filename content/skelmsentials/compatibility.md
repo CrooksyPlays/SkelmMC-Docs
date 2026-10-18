@@ -1,30 +1,27 @@
-Skelmsentials is intended to support **Minecraft/Paper 26.1 and newer**. That is the target baseline for development, with actual compatibility depending on the binary and API checks performed against each release.
+<div class="callout warning"><strong>Target vs verified support</strong><p>The source targets particular Paper versions, but a passing build or console smoke test does not establish complete compatibility. Check the exact JAR on a staging server.</p></div>
 
-## Support policy
+## Development baseline
 
-| Environment | Position |
+| Environment | Source-code position |
 | --- | --- |
-| Paper 26.1+ | Target platform; each release requires verification |
-| Spigot | Not promised without dedicated testing |
-| Purpur | Not promised without dedicated testing |
-| Folia | Not supported by default; scheduler behavior must be adapted and tested |
-| Older Minecraft server versions | Outside the stated target baseline |
+| Paper **26.1.2** | Intended compile/minimum server baseline |
+| Paper **26.2** and **26.3** | Target test versions in beta CI |
+| Paper **26.1.1** or earlier | Rejected by the source's version guard |
+| Later Paper versions | Can start with a warning; not automatically verified |
+| Java | **25** for the current development/beta builds |
+| Folia | **Not supported** |
+| Spigot/Purpur | No verified support promise |
 
-## Runtime and build requirements
+The `PaperCompatibility` class checks Minecraft version and rejects older or malformed values. `plugin.yml` declares `api-version: '26.1'`, which is not a guarantee that all patch versions of 26.1 are supported.
 
-Build Java plugins with an explicit target and the Paper API version you intend to support. Use the Java runtime required by the respective Paper build; avoid documenting one universal Java version for all future Minecraft releases.
+## Testing coverage
 
-## Why version compatibility is important
+The beta branches describe GitHub Actions compiling against the Paper 26.1.2 API and booting server builds for 26.1.2, 26.2 and 26.3 to conduct **console smoke tests**. They explicitly call out the need for real-player GUI clicks, permissions and trades on a test server.
 
-- Plugin classes and methods may move or change between APIs.
-- Scheduler calls can fail at runtime if a binary was compiled against an incompatible signature.
-- GUI events can behave differently under changed server implementations.
-- Serialization formats and registries may shift across versions.
+A successful compilation is not enough: also verify `/menu` inventory interactions, teleports/warmups, configuration reload, data persistence, utility actions, and shop transactions before production use.
 
-## Minimum verification matrix
+## Troubleshooting binary mismatches
 
-For every new Paper release under consideration, run startup/shutdown tests, basic command tests, menu inventory clicks, teleport scenarios and configuration loading. Record exact server versions and jar builds alongside the results.
+`NoSuchMethodError` can indicate the plugin was compiled against a different Paper scheduler/API signature than the server provides. Check the full stack trace, the JAR build and the exact Paper version instead of attempting to solve a binary error through config changes.
 
-## Test failures
-
-If you see `NoSuchMethodError`, first compare the Paper API used to compile the plugin with the server on which you are executing it. See [Troubleshooting](../troubleshooting/) for a practical checklist.
+See [Troubleshooting](../troubleshooting/) for diagnostics.
