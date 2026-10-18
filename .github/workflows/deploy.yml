@@ -1,0 +1,52 @@
+name: Publish SkelmMC Docs
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: github-pages
+  cancel-in-progress: false
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Check out documentation source
+        uses: actions/checkout@v4
+      - name: Install Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.13'
+          cache: 'pip'
+      - name: Install site dependencies
+        run: python -m pip install -r requirements.txt
+      - name: Generate documentation website
+        env:
+          SKELMMC_DOCS_URL: https://docs.skelm.xyz
+        run: python build.py
+      - name: Verify the generated site
+        run: |
+          test -f dist/index.html
+          test -f dist/projects/index.html
+          test -f dist/search-index.json
+          test -f dist/sitemap.xml
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v6
+      - name: Upload generated site
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: dist
+          include-hidden-files: true
+      - name: Publish site
+        id: deployment
+        uses: actions/deploy-pages@v5
