@@ -36,10 +36,12 @@ jobs:
         run: python build.py
       - name: Verify the generated site
         run: |
-          test -f dist/index.html
-          test -f dist/projects/index.html
-          test -f dist/search-index.json
-          test -f dist/sitemap.xml
+          test -s dist/index.html
+          test -s dist/projects/index.html
+          test -s dist/search-index.json
+          test -s dist/sitemap.xml
+          grep -iq '<html' dist/index.html
+          echo "Verified root index.html and documentation pages for GitHub Pages"
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v6
       - name: Upload generated site
