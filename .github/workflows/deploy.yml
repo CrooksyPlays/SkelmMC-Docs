@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
   pages: write
   id-token: write
 
@@ -23,17 +23,6 @@ jobs:
     steps:
       - name: Check out documentation source
         uses: actions/checkout@v4
-      - name: Import full documentation source
-        if: ${{ hashFiles('site-source.tar.xz') != '' }}
-        run: |
-          if [ ! -f build.py ]; then
-            tar -xJf site-source.tar.xz
-            git config user.name 'github-actions[bot]'
-            git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-            git add -A
-            git commit -m 'Import complete SkelmMC Docs source'
-            git push origin HEAD:main
-          fi
       - name: Install Python
         uses: actions/setup-python@v6
         with:
