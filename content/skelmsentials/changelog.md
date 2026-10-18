@@ -7,7 +7,8 @@
 | `main` | `e3cd59c` | Initial README and licence only |
 | `develop` | `e2c1064` | 1.1.0 foundation source |
 | `feature/player-utilities-1.2` | `c5cdd85` | 1.2.0-beta utilities |
-| `feature/shop-1.3` | `9efc67c` | 1.3.0-beta GUI shop and branding polish |
+| `feature/shop-1.3` | `b1b45aa` | 1.3.0-beta GUI shop and branding polish |
+| `feature/modular-core-1.4` | `82cdb18` | 1.4.0-alpha reversible profiles and modular admin GUI |
 
 ## 1.1.0-foundation — `develop`
 
@@ -29,6 +30,13 @@
 - `/sell`, `/sellall`, `/worth` and administrative price/reload commands.
 - Configurable `shop.yml` and transaction protections; trades currently use internal economy rather than Vault.
 - Player-visible branding defaults to `SkelmMC`, Repair icon switched to **Mace**, and menu migration fixes.
+
+## 1.4.0-alpha — `feature/modular-core-1.4`
+
+- Adds YAML-editable Survival, Prison, Factions, Minigames and Creative server profiles.
+- Implements `/setserver` listing, preview, explicit confirmation, checksummed config backups and rollback; `/skelmadmin` exposes profiles and switches for existing modules.
+- Profile changes are restricted to allowlisted Skelmsentials configuration, not worlds, gamerules, inventories, player records or third-party data.
+- Future profession, event, crate and NPC editors are **visibly unavailable** pending their runtime implementations. The [1.4–1.9 roadmap](../../platform/roadmap/) records the approved direction.
 
 ## Release policy
 

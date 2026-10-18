@@ -91,6 +91,18 @@ Chat presets have a `name`, `style`, `material` and `permission` under `chat.pre
 
 Use [utilities](../utilities/) and [shop](../shop/) for the commands and side effects.
 
+## 1.4 modular profiles (unreleased alpha)
+
+The `feature/modular-core-1.4` source introduces editable `profiles/survival.yml`, `prison.yml`, `factions.yml`, `minigames.yml` and `creative.yml` under `plugins/Skelmsentials/`. Each profile may change only the explicitly allowlisted plugin configuration keys.
+
+- `/setserver preview <profile>` prints the changes; `/setserver apply <profile>` asks for **in-game confirmation within two minutes**.
+- `/setserver backups` lists checksummed configuration backups saved under `backups/profile-config/`; `/setserver rollback <id>` requests a separately confirmed restore.
+- `/skelmadmin` controls profiles and **implemented** modules. Planned professions, events, crates and NPCs appear as unavailable.
+- Profiles must never touch world files, terrain, gamerules, inventories, player records or third-party plugin data.
+- In-game **new-content creation**, paired with editable YAML, is planned for later modules (jobs, tiers, spawners, crates, events and NPCs); it does not work in 1.4 alpha.
+
+See the [1.4–1.9 roadmap](../../platform/roadmap/) for the agreed requirements.
+
 ## Apply changes
 
 Use `/skelmsentials reload` (or `/bc reload`) for supported configuration/message changes. **Restart the server for command or permission changes and after installing/upgrading a JAR.** Keep backups of your original YAML and player/location data.

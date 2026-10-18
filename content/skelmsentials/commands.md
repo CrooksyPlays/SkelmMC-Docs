@@ -1,4 +1,4 @@
-<div class="callout warning"><strong>Source reference, not a released command list</strong><p>The foundation commands below exist in the <strong>develop</strong> branch (1.1.0-foundation). Utilities exist in the 1.2 beta branch, and shop commands in the 1.3 beta branch. The <strong>main</strong> branch does not yet contain a runnable plugin.</p></div>
+<div class="callout warning"><strong>Source reference, not a released command list</strong><p>The foundation commands below exist in the <strong>develop</strong> branch (1.1.0-foundation). Utilities exist in the 1.2 beta branch, shop commands in the 1.3 beta branch, and profile commands in the 1.4 alpha branch. The <strong>main</strong> branch does not yet contain a runnable plugin.</p></div>
 
 ## General and player commands — `develop`
 
@@ -52,6 +52,23 @@ The following are **not on develop or main as of this snapshot**:
 | --- | --- |
 | `feature/player-utilities-1.2` | `/utilities`, `/heal`, `/feed`, `/god`, `/fly`, `/speed`, `/repair`, `/hat`, `/workbench` (alias `/craft`), `/enderchest` (alias `/ec`), `/trash`, `/anvil` |
 | `feature/shop-1.3` | `/shop`, `/sell`, `/sellall`, `/worth`, `/shopadmin` |
+
+### Modular-core commands — `feature/modular-core-1.4` alpha
+
+The following commands exist in the **unreleased alpha source**. They require `skelmsentials.profiles.admin` (operator by default) or `skelmsentials.admin`.
+
+| Command | Purpose |
+| --- | --- |
+| `/setserver list` | List Survival, Prison, Factions, Minigames and Creative presets. |
+| `/setserver status` | Display the active profile and any recovery lock. |
+| `/setserver preview survival` | Show the changes to supported Skelmsentials configuration values, without applying. |
+| `/setserver apply survival` | Preview and request an in-game confirmation within two minutes. |
+| `/setserver confirm` | Confirm the pending profile/module change or rollback **in-game**; a checked config backup is created first for changes. |
+| `/setserver backups` | List recent backup IDs. |
+| `/setserver rollback <id>` | Prepare to restore a verified backup; needs separate in-game confirmation. |
+| `/skelmadmin` | Open the GUI for profiles and already implemented modules. Planned systems are marked unavailable. |
+
+Switching profiles never resets worlds, inventories or player data. The in-game editors for professions, crates, events and NPCs are future modules. See [the roadmap](../../platform/roadmap/).
 
 See [utilities](../utilities/) and [shop](../shop/) for usage and important safety notes.
 

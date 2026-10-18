@@ -2,7 +2,7 @@
 
 ## Project at a glance
 
-Skelmsentials is an Essentials-style plugin for modern Paper Minecraft servers, with configurable SkelmMC branding, player teleportation, homes, menus, economy, chat, and game modes. More features are being developed in separate branches.
+Skelmsentials is an Essentials-style plugin for modern Paper Minecraft servers, with configurable SkelmMC branding, player teleportation, homes, menus, economy, chat, and game modes. More features are being developed in separate branches. Read the [updated Skelmsentials 1.4–1.9 roadmap](../../platform/roadmap/) for the approved plan: modular profiles, integrated skills/jobs, auctions, vaults, locks, spawners, crates, events and NPCs. **The later gameplay systems are not available yet.**
 
 | Git branch | Source version | What is included | Availability |
 | --- | --- | --- | --- |
@@ -10,6 +10,7 @@ Skelmsentials is an Essentials-style plugin for modern Paper Minecraft servers, 
 | `develop` | `1.1.0-foundation` | Homes, spawn, RTP, teleport requests, warps, `/back`, internal economy, chat colours/emojis, game modes, GUIs | Development source only |
 | `feature/player-utilities-1.2` | `1.2.0-beta` | Foundation plus utility commands and a utilities GUI | Unmerged beta branch |
 | `feature/shop-1.3` | `1.3.0-beta` | Utilities plus configurable shop and pricing tools | Unmerged beta branch |
+| `feature/modular-core-1.4` | `1.4.0-alpha` | Five profiles, `/setserver`, `/skelmadmin`, module toggles, backup and rollback | Unmerged alpha branch |
 
 Branch feature information is based on the actual `plugin.yml`, Java handlers and YAML defaults, not just a roadmap. It does **not** constitute a verified live release.
 
@@ -21,6 +22,7 @@ Branch feature information is based on the actual `plugin.yml`, Java handlers an
 - [Shop and economy](../shop/) — the 1.3 beta shop, buying, selling and administration.
 - [Messages and branding](../messages/) — choose the visible server name and edit MiniMessage text.
 - [Changelog and branch status](../changelog/) — identify which milestone introduced each feature.
+- [Full SkelmMC roadmap](../../platform/roadmap/) — planned 1.4–1.9 milestones and requirements.
 
 ## Compatibility target
 
